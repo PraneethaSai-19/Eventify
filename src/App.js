@@ -28,6 +28,11 @@ import { useState } from "react";
 
 function App() {
   const [text, setText] = useState("");
+  const [event, setEvent] = useState("");
+
+  const handleClick = () => {
+    setEvent(text);
+  };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -40,7 +45,12 @@ function App() {
         onChange={(e) => setText(e.target.value)}
       />
 
+      <button onClick={handleClick}>Add Event</button>
+
       <p>You typed: {text}</p>
+
+      <h3>Event:</h3>
+      <p>{event}</p>
     </div>
   );
 }
