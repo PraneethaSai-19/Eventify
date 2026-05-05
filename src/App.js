@@ -3,111 +3,141 @@ import { useState } from "react";
 function App() {
   const [text, setText] = useState("");
   const [events, setEvents] = useState([]);
-  const [editIndex, setEditIndex] = useState(null);
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
 
   const handleClick = async () => {
-    const res = await fetch("http://localhost:5000/parse", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text }),
-    });
+    try {
+      const res = await fetch("http://localhost:5000/parse", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!data.error) {
-      if (editIndex !== null) {
-        // update existing event
-        const updated = [...events];
-        updated[editIndex] = data;
-        setEvents(updated);
-        setEditIndex(null);
-      } else {
-        // add new event
+      if (!data.error) {
         setEvents((prev) => [...prev, data]);
+        setText("");
       }
-
-      setText("");
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const handleDelete = (index) => {
-    const filtered = events.filter((_, i) => i !== index);
-    setEvents(filtered);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleClick();
   };
 
-  const handleEdit = (index) => {
-    const event = events[index];
-    setText(`${event.title} ${event.time} ${event.date}`);
-    setEditIndex(index);
-  };
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
+  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
     <div style={styles.container}>
-      <h1>AI Calendar</h1>
+      <h1 style={styles.heading}>AI Calendar</h1>
 
       {/* Input */}
       <div style={styles.inputBox}>
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="e.g. Meeting at 9"
+          onKeyDown={handleKeyDown}
+          placeholder='e.g. "Meeting tomorrow at 5pm"'
           style={styles.input}
         />
-        <button onClick={handleClick}>
-          {editIndex !== null ? "Update" : "Add"}
+        <button onClick={handleClick} style={styles.button}>
+          Add
         </button>
       </div>
 
-      {/* Events */}
-      <div style={styles.list}>
-        {events.map((event, index) => (
-          <div key={index} style={styles.card}>
-            <h3>{event.title}</h3>
-            <p>📅 {event.date}</p>
-            <p>⏰ {event.time}</p>
+      {/* Month */}
+      <h2 style={styles.monthHeading}>
+        {monthNames[month]} {year}
+      </h2>
 
-            <div style={styles.actions}>
-              <button onClick={() => handleEdit(index)}>✏️ Edit</button>
-              <button onClick={() => handleDelete(index)}>❌ Delete</button>
-            </div>
+      {/* Calendar */}
+      <div style={styles.calendar}>
+        {dayNames.map((d) => (
+          <div key={d} style={styles.dayLabel}>
+            {d}
           </div>
         ))}
+
+        {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+          <div key={i} style={styles.emptyDay} />
+        ))}
+
+        {days.map((day) => {
+          const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          const dayEvents = events.filter((e) => e.date === dateStr);
+
+          return (
+            <div key={day} style={styles.day}>
+              <strong>{day}</strong>
+
+              {dayEvents.map((event, i) => (
+                <div key={i} style={styles.event}>
+                  {event.time && <span>{event.time} </span>}
+                  {event.title}
+                </div>
+              ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
 const styles = {
-  container: {
-    maxWidth: "600px",
-    margin: "40px auto",
-    fontFamily: "Arial",
-  },
-  inputBox: {
-    display: "flex",
-    gap: "10px",
-    marginBottom: "20px",
-  },
-  input: {
-    flex: 1,
+  container: { maxWidth: "900px", margin: "20px auto", fontFamily: "Arial" },
+  heading: { textAlign: "center" },
+  monthHeading: { textAlign: "center" },
+  inputBox: { display: "flex", gap: "10px", marginBottom: "20px" },
+  input: { flex: 1, padding: "10px" },
+  button: {
     padding: "10px",
+    backgroundColor: "#4CAF50",
+    color: "white",
+    border: "none",
   },
-  list: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
+  calendar: {
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    gap: "5px",
   },
-  card: {
-    padding: "15px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-  },
-  actions: {
-    marginTop: "10px",
-    display: "flex",
-    gap: "10px",
+  dayLabel: { textAlign: "center", fontWeight: "bold" },
+  emptyDay: { minHeight: "80px" },
+  day: { border: "1px solid #ccc", minHeight: "80px", padding: "5px" },
+  event: {
+    backgroundColor: "#4CAF50",
+    color: "white",
+    marginTop: "3px",
+    padding: "3px",
+    borderRadius: "4px",
+    fontSize: "12px",
   },
 };
 
