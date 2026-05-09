@@ -1,3 +1,5 @@
+// App.js
+
 import { useState, useEffect } from "react";
 
 function App() {
@@ -11,6 +13,14 @@ function App() {
 
   const [editIndex, setEditIndex] = useState(null);
 
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const [preview, setPreview] = useState(null);
+
+  const [aiPreview, setAiPreview] = useState(null);
+
+  const [showPreview, setShowPreview] = useState(false);
+
   useEffect(() => {
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
@@ -23,7 +33,60 @@ function App() {
 
   const [selectedDate, setSelectedDate] = useState(null);
 
-  // TOP INPUT
+  // ==========================
+  // IMAGE CHANGE
+  // ==========================
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      setSelectedImage(file);
+
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  // ==========================
+  // IMAGE UPLOAD
+  // ==========================
+
+  const handleImageUpload = async () => {
+    if (!selectedImage) return;
+
+    const formData = new FormData();
+
+    formData.append("image", selectedImage);
+
+    try {
+      const res = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      console.log(data);
+
+      if (!data.error) {
+        setAiPreview(data);
+
+        setShowPreview(true);
+      } else {
+        alert("AI extraction failed ❌");
+      }
+    } catch (error) {
+      console.error(error);
+
+      alert("Upload failed ❌");
+    }
+  };
+
+  // ==========================
+  // TOP ADD / EDIT
+  // ==========================
+
   const handleTopAdd = async () => {
     if (!text.trim()) return;
 
@@ -56,7 +119,10 @@ function App() {
     }
   };
 
+  // ==========================
   // MONTH CHANGE
+  // ==========================
+
   const changeMonth = (dir) => {
     const newDate = new Date(currentDate);
 
@@ -108,13 +174,28 @@ function App() {
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="e.g. Lunch tomorrow at 5pm"
+          placeholder="e.g. Lunch on 9th at 12pm"
           style={styles.input}
         />
 
         <button onClick={handleTopAdd} style={styles.button}>
           {editIndex !== null ? "Update" : "Add"}
         </button>
+      </div>
+
+      {/* IMAGE UPLOAD */}
+      <div style={styles.uploadSection}>
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+
+        {preview && (
+          <>
+            <img src={preview} alt="preview" style={styles.previewImage} />
+
+            <button onClick={handleImageUpload} style={styles.button}>
+              Upload Poster
+            </button>
+          </>
+        )}
       </div>
 
       {/* NAV */}
@@ -189,7 +270,6 @@ function App() {
                     }}
                   >
                     {event.time && `${event.time} `}
-
                     {event.title}
                   </div>
                 );
@@ -284,7 +364,6 @@ function App() {
             </p>
 
             <div style={styles.modalActions}>
-              {/* EDIT */}
               <button
                 style={styles.editBtn}
                 onClick={() => {
@@ -302,7 +381,6 @@ function App() {
                 Edit
               </button>
 
-              {/* DELETE */}
               <button
                 style={styles.deleteBtn}
                 onClick={() => {
@@ -316,12 +394,84 @@ function App() {
                 Delete
               </button>
 
-              {/* CLOSE */}
               <button
                 style={styles.closeBtn}
                 onClick={() => setSelectedEvent(null)}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* AI PREVIEW MODAL */}
+      {showPreview && aiPreview && (
+        <div style={styles.overlay}>
+          <div style={styles.modal}>
+            <h2>AI Extracted Event</h2>
+
+            <input
+              value={aiPreview.title}
+              onChange={(e) =>
+                setAiPreview({
+                  ...aiPreview,
+                  title: e.target.value,
+                })
+              }
+              placeholder="Title"
+              style={styles.input}
+            />
+
+            <input
+              type="date"
+              value={aiPreview.date}
+              onChange={(e) =>
+                setAiPreview({
+                  ...aiPreview,
+                  date: e.target.value,
+                })
+              }
+              style={styles.input}
+            />
+
+            <input
+              type="time"
+              value={aiPreview.time}
+              onChange={(e) =>
+                setAiPreview({
+                  ...aiPreview,
+                  time: e.target.value,
+                })
+              }
+              style={styles.input}
+            />
+
+            <div style={styles.modalActions}>
+              <button
+                style={styles.editBtn}
+                onClick={() => {
+                  setEvents((prev) => [...prev, aiPreview]);
+
+                  setShowPreview(false);
+
+                  setAiPreview(null);
+
+                  alert("Event saved successfully ✅");
+                }}
+              >
+                Save Event
+              </button>
+
+              <button
+                style={styles.closeBtn}
+                onClick={() => {
+                  setShowPreview(false);
+
+                  setAiPreview(null);
+                }}
+              >
+                Cancel
               </button>
             </div>
           </div>
@@ -334,197 +484,148 @@ function App() {
 const styles = {
   container: {
     maxWidth: "950px",
-
     margin: "20px auto",
-
     fontFamily: "Segoe UI",
-
     padding: "0 16px",
   },
 
   title: {
     textAlign: "center",
-
     marginBottom: "20px",
   },
 
   inputBox: {
     display: "flex",
-
     gap: "10px",
-
     marginBottom: "20px",
   },
 
   input: {
     flex: 1,
-
     padding: "12px",
-
     borderRadius: "8px",
-
     border: "1px solid #ccc",
-
     fontSize: "15px",
+    marginBottom: "10px",
   },
 
   button: {
     padding: "12px 20px",
-
     background: "#2196f3",
-
     color: "white",
-
     border: "none",
-
     borderRadius: "8px",
-
     cursor: "pointer",
+    marginTop: "10px",
+  },
+
+  uploadSection: {
+    marginBottom: "20px",
+  },
+
+  previewImage: {
+    width: "220px",
+    display: "block",
+    marginTop: "10px",
+    borderRadius: "10px",
+    border: "1px solid #ccc",
   },
 
   nav: {
     display: "flex",
-
     justifyContent: "space-between",
-
     alignItems: "center",
-
     marginBottom: "12px",
   },
 
   arrowBtn: {
     width: "36px",
-
     height: "36px",
-
     borderRadius: "50%",
-
     border: "1px solid #ccc",
-
     background: "white",
-
     cursor: "pointer",
   },
 
   calendar: {
     display: "grid",
-
     gridTemplateColumns: "repeat(7, 1fr)",
-
     gap: "6px",
   },
 
   dayLabel: {
     textAlign: "center",
-
     fontWeight: "bold",
-
     padding: "6px 0",
   },
 
   day: {
     minHeight: "110px",
-
     padding: "6px",
-
     borderRadius: "8px",
-
     cursor: "pointer",
-
-    transition: "0.2s",
   },
 
   event: {
     background: "#4CAF50",
-
     color: "white",
-
     padding: "6px 8px",
-
     marginTop: "5px",
-
     borderRadius: "6px",
-
     fontSize: "12px",
   },
 
   overlay: {
     position: "fixed",
-
     top: 0,
-
     left: 0,
-
     width: "100%",
-
     height: "100%",
-
     background: "rgba(0,0,0,0.4)",
-
     display: "flex",
-
     justifyContent: "center",
-
     alignItems: "center",
+    zIndex: 1000,
   },
 
   modal: {
     background: "white",
-
     padding: "24px",
-
     borderRadius: "12px",
-
     width: "320px",
   },
 
   modalActions: {
     display: "flex",
-
     justifyContent: "space-between",
-
     marginTop: "20px",
+    gap: "10px",
   },
 
   editBtn: {
     background: "#2196f3",
-
     color: "white",
-
     border: "none",
-
     padding: "8px 14px",
-
     borderRadius: "6px",
-
     cursor: "pointer",
   },
 
   deleteBtn: {
     background: "#f44336",
-
     color: "white",
-
     border: "none",
-
     padding: "8px 14px",
-
     borderRadius: "6px",
-
     cursor: "pointer",
   },
 
   closeBtn: {
     background: "#777",
-
     color: "white",
-
     border: "none",
-
     padding: "8px 14px",
-
     borderRadius: "6px",
-
     cursor: "pointer",
   },
 };
