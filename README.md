@@ -1,13 +1,8 @@
-<<<<<<< HEAD
-````md
-=======
->>>>>>> c0a15ad (Added README architecture diagram)
 # AI Calendar 📅🤖
 
 AI Calendar is a smart event management web application that allows users to create and manage events using natural language and AI-powered poster extraction.
 
 Users can:
-<<<<<<< HEAD
 - Add events by typing natural language
 - Upload event posters/images
 - Automatically extract event details using OCR + AI
@@ -57,123 +52,6 @@ Upload event posters and the system will:
 ## ✏ Event Management
 
 Users can:
-- Add events
-- Edit events
-- Delete events
-- Confirm AI extracted events
-
----
-
-# 🛠 Tech Stack
-
-## Frontend
-- React.js
-- JavaScript
-- CSS (Inline Styling)
-
-## Backend
-- Node.js
-- Express.js
-
-## AI / OCR
-- Tesseract.js (OCR)
-- Mistral AI API
-
-## File Upload
-- Multer
-
-## Storage
-- LocalStorage
-
----
-
-# 📂 Project Structure
-
-```bash
-react-ai-calendar/
-│
-├── backend/
-│   ├── uploads/
-│   ├── .env
-│   ├── package.json
-│   └── server.js
-│
-├── public/
-├── src/
-│   ├── App.js
-│   └── ...
-│
-├── package.json
-└── README.md
-````
-
----
-
-# ⚙ Installation & Setup
-
-## 1️⃣ Clone Repository
-
-```bash
-git clone https://github.com/your-username/ai-calendar.git
-```
-
----
-
-=======
-
-- Add events by typing natural language
-- Upload event posters/images
-- Automatically extract event details using OCR + AI
-- View events in a clean calendar UI
-- Edit or delete events easily
-
----
-
-# ✨ Features
-
-## 📝 Natural Language Event Input
-
-Users can type:
-
-- `Lunch on 9th at 1pm`
-- `Hackathon tomorrow at 6pm`
-- `Meeting July 25 at 4pm`
-
-The app intelligently extracts:
-
-- Event title
-- Date
-- Time
-
----
-
-## 🖼 AI Poster Event Extraction
-
-Upload event posters and the system will:
-
-1. Extract text using OCR
-2. Process extracted text using AI
-3. Detect:
-   - Event title
-   - Event date
-   - Event time
-4. Show confirmation popup before saving
-
----
-
-## 📆 Interactive Calendar
-
-- Monthly calendar view
-- Events displayed on correct dates
-- Highlight current day
-- Navigate between months
-
----
-
-## ✏ Event Management
-
-Users can:
-
 - Add events
 - Edit events
 - Delete events
@@ -190,27 +68,22 @@ Users can:
 # 🛠 Tech Stack
 
 ## Frontend
-
 - React.js
 - JavaScript
 - CSS (Inline Styling)
 
 ## Backend
-
 - Node.js
 - Express.js
 
 ## AI / OCR
-
 - Tesseract.js (OCR)
 - Mistral AI API
 
 ## File Upload
-
 - Multer
 
 ## Storage
-
 - LocalStorage
 
 ---
@@ -250,7 +123,6 @@ git clone https://github.com/your-username/ai-calendar.git
 
 ---
 
->>>>>>> c0a15ad (Added README architecture diagram)
 ## 2️⃣ Frontend Setup
 
 Open terminal:
@@ -358,18 +230,10 @@ Lunch on 10th at 1pm
 ## Poster Upload
 
 Upload:
-
-<<<<<<< HEAD
-* Event posters
-* Party flyers
-* College fest posters
-* Hackathon banners
-=======
 - Event posters
 - Party flyers
 - College fest posters
 - Hackathon banners
->>>>>>> c0a15ad (Added README architecture diagram)
 
 The system extracts event details automatically.
 
@@ -377,15 +241,6 @@ The system extracts event details automatically.
 
 # 🔮 Future Improvements
 
-<<<<<<< HEAD
-* Google Calendar Sync
-* Event Notifications
-* Dark Mode
-* User Authentication
-* Database Integration
-* Better AI Extraction
-* Mobile Responsive UI
-=======
 - Google Calendar Sync
 - Event Notifications
 - Dark Mode
@@ -393,26 +248,15 @@ The system extracts event details automatically.
 - Database Integration
 - Better AI Extraction
 - Mobile Responsive UI
->>>>>>> c0a15ad (Added README architecture diagram)
 
 ---
 
 # 👩‍💻 Author
 
-<<<<<<< HEAD
-Developed by Praneetha Sai Mogilisetti
-=======
 Developed by Praneetha Sai ✨
->>>>>>> c0a15ad (Added README architecture diagram)
 
 ---
 
 # ⭐ If you like this project
 
 Give it a star on GitHub ⭐
-<<<<<<< HEAD
-
-```
-```
-=======
->>>>>>> c0a15ad (Added README architecture diagram)
