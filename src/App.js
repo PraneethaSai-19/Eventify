@@ -167,7 +167,7 @@ function App() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>AI Calendar</h1>
+      <h1 style={styles.title}>Eventify</h1>
 
       {/* INPUT */}
       <div style={styles.inputBox}>
