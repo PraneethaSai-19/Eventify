@@ -65,6 +65,32 @@ Users can:
 
 ---
 
+# 📸 Output Screens
+
+## 🏠 Main Calendar
+
+![Main Calendar](./README-assets/screenshots/calendar.png)
+
+---
+
+## 🖼 Poster Upload & AI Extraction
+
+![Poster Upload](./README-assets/screenshots/upload.png)
+
+---
+
+## 🤖 AI Confirmation Popup
+
+![AI Popup](./README-assets/screenshots/popup.png)
+
+---
+
+## 📅 Event Details
+
+![Event Details](./README-assets/screenshots/event-details.png)
+
+---
+
 # 🛠 Tech Stack
 
 ## Frontend
