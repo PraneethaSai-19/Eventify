@@ -1,10 +1,10 @@
 # Eventify 📅
 
-Eventify is a smart event management web application that allows users to create and manage events using natural language and AI-powered poster extraction.
+Eventify is a smart event management web application that allows users to create and manage events using natural language and <AI-powered poster extraction>.
 
 Users can:
 - Add events by typing natural language
-- Upload event posters/images
+- <Upload event posters/images>
 - Automatically extract event details using OCR + AI
 - View events in a clean calendar UI
 - Edit or delete events easily
@@ -27,9 +27,9 @@ The app intelligently extracts:
 
 ---
 
-## 🖼 AI Poster Event Extraction
+## 🖼 < AI Poster Event Extraction
 
-Upload event posters and the system will:
+Upload event posters and the system will>:
 1. Extract text using OCR
 2. Process extracted text using AI
 3. Detect:
