@@ -1,10 +1,10 @@
 # Eventify 📅
 
-Eventify is a smart event management web application that allows users to create and manage events using natural language and <AI-powered poster extraction>.
+Eventify is a smart event management web application that allows users to create and manage events using natural language and AI-powered event extraction.
 
 Users can:
 - Add events by typing natural language
-- <Upload event posters/images>
+- Upload event images, flyers, invitations, or screenshots
 - Automatically extract event details using OCR + AI
 - View events in a clean calendar UI
 - Edit or delete events easily
@@ -27,9 +27,9 @@ The app intelligently extracts:
 
 ---
 
-## 🖼 < AI Poster Event Extraction
+## 🖼 AI Event Extraction
 
-Upload event posters and the system will>:
+Upload event images and the system will:
 1. Extract text using OCR
 2. Process extracted text using AI
 3. Detect:
@@ -73,7 +73,7 @@ Users can:
 
 ---
 
-## 🖼 Poster Upload & AI Extraction
+## 🖼 AI Event Extraction
 
 ![Poster Upload](./README-assets/screenshots/upload.png)
 
@@ -120,7 +120,8 @@ Users can:
 react-ai-calendar/
 │
 ├── README-assets/
-│   └── architecture.png
+│   ├── architecture.png
+│   └── screenshots/
 │
 ├── backend/
 │   ├── uploads/
@@ -225,10 +226,10 @@ http://localhost:5000
 
 ---
 
-# 🧠 How AI Poster Extraction Works
+# 🧠 How AI Event Extraction Works
 
 ```text
-Poster Image
+Event Image
      ↓
 OCR using Tesseract.js
      ↓
@@ -253,13 +254,14 @@ Saved to Calendar
 Lunch on 10th at 1pm
 ```
 
-## Poster Upload
+## Image Upload
 
 Upload:
-- Event posters
-- Party flyers
-- College fest posters
-- Hackathon banners
+- Event flyers
+- Invitations
+- Screenshots
+- Event banners
+- College fest images
 
 The system extracts event details automatically.
 
